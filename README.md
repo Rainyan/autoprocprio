@@ -1,4 +1,4 @@
-![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/Rainyan/autoprocprio/latest/total)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/Rainyan/autoprocprio/latest/total)](https://github.com/Rainyan/autoprocprio/releases)
 [![Pylint](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml/badge.svg)](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml)
 
 # autoprocprio
