@@ -1,3 +1,5 @@
+[![Pylint](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml/badge.svg)](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml)
+
 # autoprocprio
 
 <hr>
