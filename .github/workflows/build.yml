@@ -42,8 +42,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}-${{ runner.os }}
-          release_name: Release (${{runner.os}}) ${{ github.ref }}
+          tag_name: ${{ github.ref }}+${{ runner.os }}
+          release_name: Release ${{ github.ref }} (${{runner.os}})
           body: Automated release build for ${{ runner.os }}. This is a standalone build that bundles all the requirements into the executable.
           draft: true
           prerelease: true
