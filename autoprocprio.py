@@ -327,6 +327,9 @@ def conditional(decorator, condition):
     return the_decorator
 
 
+# Can't register atexit on Windows, because we gotta catch the interrupt
+# using a Win API in order to also catch the possibility of user closing
+# the window via the top-right X icon.
 @conditional(atexit.register, not platform_is_windows())
 def restore_original_ps_values():
     """This function is registered to run at script exit.
