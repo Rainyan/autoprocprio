@@ -61,7 +61,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "5.2.0"
+SCRIPT_VERSION = "5.2.1"
 
 # List of all the process names to prevent from using too much CPU time.
 # This sets low priority and isolates them to CPU core 0.
