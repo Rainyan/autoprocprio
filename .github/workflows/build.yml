@@ -39,7 +39,7 @@ jobs:
       
       - name: Create build compressed archive
         shell: powershell
-        run: Compress-Archive -Path ".\dist" -DestinationPath "{{env:GITHUB_ACTION}}-{{env:RUNNER_OS}}.zip"
+        run: Compress-Archive -Path ".\dist" -DestinationPath "{{env.GITHUB_ACTION}}-{{env.RUNNER_OS}}.zip"
         
       - name: Create release
         id: create_release
@@ -61,6 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: "${{github.workspace}}/{{env:GITHUB_ACTION}}-{{env:RUNNER_OS}}.zip"
-          asset_name: "{{env:GITHUB_ACTION}}-{{env:RUNNER_OS}}.zip"
+          asset_path: "${{github.workspace}}/dist/{{env.GITHUB_ACTION}}-{{env.RUNNER_OS}}.zip"
+          asset_name: "{{env.GITHUB_ACTION}}-{{env.RUNNER_OS}}.zip"
           asset_content_type: application/zip
