@@ -1,13 +1,16 @@
 # autoprocprio
 
-## TL;DR
+<hr>
+
+### TL;DR:
 
 Ad-hoc tool for making csgo not lag as much.
 
-Comes with a all-in-one Windows app release; see the [releases page](https://github.com/Rainyan/autoprocprio/releases) to download.
+Windows app available; see the [Releases page](https://github.com/Rainyan/autoprocprio/releases) to download.
 
 <hr>
-<hr>
+
+### Longer version:
 
 Python 3 script for automatically setting (primarily Windows) processes' CPU priority and affinity by process name. 
 
@@ -21,7 +24,7 @@ drawing video game frames with those cycles instead.
 
 This script *should* be video game anti-cheat safe — all it does is iterate
 running processes, and selectively read & reassign said process priority and
-CPU affinity levels — but use at your own risk.
+CPU affinity levels, much like one could manually do using a task manager — but use at your own risk.
 
 For Python module requirements, please see the [requirements](requirements.txt) file.
 
@@ -30,3 +33,4 @@ For Python module requirements, please see the [requirements](requirements.txt) 
 
 ## Usage:
   - Just run the script: `python autoprocprio.py`
+  - Or from virtual env: `pipenv install && pipenv run python autoprocprio.py`
