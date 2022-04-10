@@ -15,11 +15,6 @@
    URL to the latest version of this script:
        https://github.com/Rainyan/autoprocprio
 
-   Required additional Python packages:
-     - psutil (https://pypi.org/project/psutil/)
-     - termcolor (https://pypi.org/project/termcolor/)
-     - Windows requirement: colorama (https://pypi.org/project/colorama/)
-
    Config:
      - Assign the BAD_PROCNAMES and GOOD_PROCNAMES globals as required.
 
