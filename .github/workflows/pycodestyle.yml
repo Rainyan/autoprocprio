@@ -7,6 +7,12 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
+    # Ignore changes to the readme, and to other actions.
+    paths:
+      - "**"
+      - '.github/workflows/pycodestyle.yml'
+      - "!**.md"
+      - "!**.yml"
   pull_request:
     branches: [ main ]
 
