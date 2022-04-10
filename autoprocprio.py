@@ -52,8 +52,7 @@ from termcolor import colored
 
 
 def platform_is_windows():
-    """Returns a boolean of whether the current OS platform is Windows.
-    """
+    """Returns a boolean of whether the current OS platform is Windows."""
     return os.name == "nt"
 
 
