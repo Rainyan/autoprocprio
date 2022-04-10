@@ -1,4 +1,14 @@
 # autoprocprio
+
+## TL;DR
+
+Ad-hoc tool for making csgo not lag as much.
+
+Comes with a all-in-one Windows app release; see the [releases page](https://github.com/Rainyan/autoprocprio/releases) to download.
+
+<hr>
+<hr>
+
 Python 3 script for automatically setting (primarily Windows) processes' CPU priority and affinity by process name. 
 
 This script is a kludge meant for continuously setting `BAD_PROCNAMES` to
