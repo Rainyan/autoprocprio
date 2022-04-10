@@ -1,5 +1,5 @@
-[![Pylint](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml/badge.svg)](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml)
 ![GitHub release (latest by SemVer including pre-releases)](https://img.shields.io/github/downloads-pre/Rainyan/autoprocprio/latest/total)
+[![Pylint](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml/badge.svg)](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml)
 
 # autoprocprio
 
