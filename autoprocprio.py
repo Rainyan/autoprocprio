@@ -1,4 +1,4 @@
-#!/bin/env/python3
+#!/usr/bin/env python3
 
 """This script is a kludge meant for continuously setting "BAD_PROCNAMES" to
    the lowest CPU priority, and isolating their threads affinity to CPU core(s)
