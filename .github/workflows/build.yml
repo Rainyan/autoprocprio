@@ -36,11 +36,14 @@ jobs:
 
       - name: Build target
         run: |
-          python -m pyinstaller --onefile --version-file version.rc autoprocprio.py
+          where pyinstaller
+          echo "Dir:"
+          dir
+          pyinstaller --onefile --version-file version.rc autoprocprio.py
       
       - name: Check
         run: |
           dir
           cd dist
           dir
-          
+
