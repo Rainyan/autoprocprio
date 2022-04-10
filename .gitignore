@@ -1,3 +1,6 @@
+# Using requirements.txt so ignoring this on purpose.
+Pipfile
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
