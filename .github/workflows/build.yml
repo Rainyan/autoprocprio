@@ -35,15 +35,32 @@ jobs:
           pip install --upgrade pyinstaller
 
       - name: Build target
-        run: |
-          where pyinstaller
-          echo "Dir:"
-          dir
-          pyinstaller --onefile --version-file version.rc autoprocprio.py
+        run: pyinstaller --onefile --version-file version.rc autoprocprio.py
       
-      - name: Check
-        run: |
-          dir
-          cd dist
-          dir
-
+      - name: Create build compressed archive
+        shell: powershell
+        run: Compress-Archive -Path ".\dist" -DestinationPath "{{env:GITHUB_ACTION}}-{{env:RUNNER_OS}}.zip"
+        
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}-${{ runner.os }}
+          release_name: Release (${{runner.os}}) ${{ github.ref }}
+          body: |
+            Automated release build for ${{runner.os}}.
+          draft: true
+          prerelease: true
+        
+      - name: Upload release asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: "${{github.workspace}}/{{env:GITHUB_ACTION}}-{{env:RUNNER_OS}}.zip"
+          asset_name: "{{env:GITHUB_ACTION}}-{{env:RUNNER_OS}}.zip"
+          asset_content_type: application/zip
