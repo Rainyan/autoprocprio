@@ -30,12 +30,12 @@ jobs:
 
       - name: Build target
         run: pyinstaller --onefile --version-file version.rc autoprocprio.py
-      
+
       - name: Create build compressed archive
         working-directory: ${{ github.workspace }}
         shell: powershell
         run: Compress-Archive -Path ./dist -DestinationPath ${{ github.workspace }}/${{ github.event.repository.name }}-${{ runner.os }}.zip
-        
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -47,16 +47,7 @@ jobs:
           body: Automated release build for ${{ runner.os }}. This is a standalone build that bundles all the requirements into the executable.
           draft: true
           prerelease: true
-      
-      - name: Debug
-        working-directory: ${{ github.workspace }}
-        shell: cmd
-        run: |
-          dir
-          pushd dist
-          dir
-          popd
-      
+
       - name: Upload release asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
