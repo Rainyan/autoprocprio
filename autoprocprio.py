@@ -13,7 +13,7 @@
    CPU affinity levels — but use at your own risk.
 
    URL to the latest version of this script:
-       https://gist.github.com/Rainyan/54246de924b179cf3efa2c99678c6a5c
+       https://github.com/Rainyan/autoprocprio
 
    Required additional Python packages:
      - psutil (https://pypi.org/project/psutil/)
