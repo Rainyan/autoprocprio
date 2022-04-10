@@ -344,10 +344,10 @@ def restore_original_ps_values():
     # appear friendlier, since we are potentially throwing some scary-looking
     # interrupt exceptions which the user might interpret as an error state.
     print_info(colored("\n\n\n\n\n"
-                       " = = = = = = = = = = = = = = = = = = = = = = = = =  =\n"
-                       f" = The {SCRIPT_NAME} script is now exiting. Goodbye!"
-                       " =\n = = = = = = = = = = = = = = = = = = = = = = = = ="
-                       "  =\n\n\n\n\n\n\n\n\n\n",
+                       " = = = = = = = = = = = = = = = = = = = = = = = = =  ="
+                       f"\n = The {SCRIPT_NAME} script is now exiting. Goodbye"
+                       "! =\n = = = = = = = = = = = = = = = = = = = = = = = = "
+                       "=  =\n\n\n\n\n\n\n\n\n\n",
                        "magenta"), True)
     time.sleep(5)
 
