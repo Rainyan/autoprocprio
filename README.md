@@ -1,4 +1,4 @@
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/downloads-pre/Rainyan/autoprocprio/latest/total)](https://github.com/Rainyan/autoprocprio/releases)
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Rainyan/autoprocprio?include_prereleases)
 [![MIT](https://img.shields.io/github/license/Rainyan/discord-bot-ntpug)](LICENSE)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 [![Pylint](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml/badge.svg)](https://github.com/Rainyan/autoprocprio/actions/workflows/pycodestyle.yml)
