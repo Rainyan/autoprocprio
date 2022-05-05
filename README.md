@@ -40,3 +40,6 @@ For Python module requirements, please see the [requirements](requirements.txt) 
 ## Usage:
   - Just run the script: `python autoprocprio.py`
   - Or from virtual env: `pipenv install && pipenv run python autoprocprio.py`
+
+## Troubleshooting/questions/feature requests
+Feel free to [open a ticket](https://github.com/Rainyan/autoprocprio/issues)!
