@@ -38,7 +38,10 @@ For Python module requirements, please see the [requirements](requirements.txt) 
   - Assign the `BAD_PROCNAMES` and `GOOD_PROCNAMES` globals as required.
 
 ## Usage:
-  - Just run the script: `python autoprocprio.py`
+### Windows app version:
+  - Just run the app in the background
+### Python script version:
+  - Run the script: `python autoprocprio.py`
   - Or from virtual env: `pipenv install && pipenv run python autoprocprio.py`
 
 ## Troubleshooting/questions/feature requests
