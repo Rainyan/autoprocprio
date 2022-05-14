@@ -39,7 +39,7 @@ For Python module requirements, please see the [requirements](requirements.txt) 
 
 ## Usage:
 ### Windows app version:
-  - Just run the app in the background
+  - Just run the app executable in the background
 ### Python script version:
   - Run the script: `python autoprocprio.py`
   - Or from virtual env: `pipenv install && pipenv run python autoprocprio.py`
