@@ -61,7 +61,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "5.2.2"
+SCRIPT_VERSION = "5.2.3"
 
 # List of all the process names to prevent from using too much CPU time.
 # This sets low priority and isolates them to CPU core 0.
@@ -104,7 +104,7 @@ if platform_is_windows():
     colorama.init()  # Only required on Windows.
 
     def on_exit(signal_type):
-        """For catching user exiting the app window by pressing the X button.
+        """Catch user exit signal, including user pressing the X icon.
         """
         print(f"Caught signal: {signal_type}")
         restore_original_ps_values()
@@ -156,15 +156,13 @@ def get_nice_name(nice):
 
 
 def timestamp():
-    """Return a pretty-print colored timestamp.
-    """
+    """Return a pretty-print colored timestamp."""
     text = f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"
     return colored(text, DATE_COLOR)
 
 
 def print_info(msg, always_print=False, num_extra_lvls=0):
-    """Helper for pretty-printing a line of info.
-    """
+    """Helper for pretty-printing a line of info."""
     if not VERBOSE and not always_print:
         return
     arrow_base = "-"
@@ -175,9 +173,9 @@ def print_info(msg, always_print=False, num_extra_lvls=0):
 
 
 class TargetProcs():
-    """Sets all processes of name procname to specific CPU niceness
-       and affinity levels. Periodically call update_procs() to refresh the
-       proc cache.
+    """Set all processes of procname to specific nice and affinity.
+       
+       Periodically call update_procs() to refresh the proc cache.
     """
 
     def __init__(self, procname, nice=None, affinity=None, verbose=False):
@@ -193,8 +191,7 @@ class TargetProcs():
                    f'{colored(self.procname, PROC_COLOR)}.', self.verbose, 4)
 
     def set_procs_properties(self):
-        """Sets the CPU niceness and affinity levels of our procs.
-        """
+        """Sets the CPU niceness and affinity levels of our procs."""
         ps_color = PS_BAD_COLOR if self.nice == BAD_NICENESS else PS_GOOD_COLOR
 
         for p in self.cachedprocs:
@@ -213,9 +210,9 @@ class TargetProcs():
                            f"affinity to CPU cores {colored_aff}", True, 4)
 
     def update_procs(self):
-        """Removes cached procs that have been terminated, caches any
+        """Remove cached procs that have been terminated, cache any
            relevant procs that have not yet been cached, and finally
-           calls set_procs_properties().
+           call set_procs_properties().
         """
         self.cachedprocs = [p for p in self.cachedprocs if p.is_running()]
         self.og_ps_vals = {p: t for p, t in self.og_ps_vals.items()
@@ -237,7 +234,7 @@ class TargetProcs():
         self.set_procs_properties()
 
     def restore_procs_properties(self):
-        """Restores original values for nice (priority) and CPU affinity of all
+        """Restore original values for nice (priority) and CPU affinity of all
            previously cached instances of self.procname where that process
            instance is still currently running.
         """
