@@ -174,7 +174,7 @@ def print_info(msg, always_print=False, num_extra_lvls=0):
 
 class TargetProcs():
     """Set all processes of procname to specific nice and affinity.
-       
+
        Periodically call update_procs() to refresh the proc cache.
     """
 
@@ -191,7 +191,7 @@ class TargetProcs():
                    f'{colored(self.procname, PROC_COLOR)}.', self.verbose, 4)
 
     def set_procs_properties(self):
-        """Sets the CPU niceness and affinity levels of our procs."""
+        """Set the CPU niceness and affinity levels of our procs."""
         ps_color = PS_BAD_COLOR if self.nice == BAD_NICENESS else PS_GOOD_COLOR
 
         for p in self.cachedprocs:
