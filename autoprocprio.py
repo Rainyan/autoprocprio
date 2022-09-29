@@ -63,7 +63,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "5.2.4"
+SCRIPT_VERSION = "6.0.0"
 
 
 def add_app(executable_name):
