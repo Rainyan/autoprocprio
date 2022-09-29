@@ -378,8 +378,8 @@ def main():
         print_info("Proc update...")
         for p in PROCS:
             p.update_procs()
-        print_info(colored("(Now active. To revert CPU priority changes, please"
-                           " close this window when you are done.)",
+        print_info(colored("(Now active. To revert CPU priority changes, "
+                           "please close this window when you are done.)",
                            "magenta"), True)
         try:
             time.sleep(POLL_DELAY_SECONDS)
