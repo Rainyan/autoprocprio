@@ -15,6 +15,9 @@ pywin32 = {version=">=303", markers="sys_platform=='win32'"}
 [tool.poetry.dev-dependencies]
 pycodestyle = "~2.9.1"
 
+[tool.poetry.scripts]
+autoprocprio = "autoprocprio"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
