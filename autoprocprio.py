@@ -58,6 +58,7 @@ def platform_is_windows():
 
 if platform_is_windows():
     import colorama  # For command prompt colors to work properly
+    import ctypes    # For checking for admin privileges
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
@@ -98,6 +99,13 @@ GOOD_NICENESS = psutil.HIGH_PRIORITY_CLASS if platform_is_windows() else -15
 GOOD_AFFINITY = [a for a in list(range(cpu_count())) if a not in BAD_AFFINITY]
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
 assert len(GOOD_AFFINITY) > 0, "Need at least one CPU core"
+
+
+def is_admin():
+    """Returns whether the user is running this script as admin/sudo."""
+    if platform_is_windows():
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    return "SUDO_UID" in os.environ
 
 
 if platform_is_windows():
@@ -279,33 +287,32 @@ class TargetProcs():
                                print_restore_info, 2)
 
     def _get_nice(self, p):
-        try:
-            return p.nice()
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
-        return None
+        return self._try_psutil_get(p.nice)
 
     def _get_affinity(self, p):
-        try:
-            return p.cpu_affinity()
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
-        return None
+        return self._try_psutil_get(p.cpu_affinity)
 
     def _set_nice(self, p, nice):
-        try:
-            p.nice(nice)
-            return True
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
-        return False
+        return self._try_psutil_set(p.nice, nice)
 
     def _set_affinity(self, p, affinity):
+        return self._try_psutil_set(p.cpu_affinity, affinity)
+
+    def _try_psutil_get(self, fn):
         try:
-            p.cpu_affinity(affinity)
+            return fn()
+        except psutil.AccessDenied as err:
+            print_info(colored(f"WARNING: {err}", PS_BAD_COLOR), True)
+        return False
+
+    def _try_psutil_set(self, fn, val):
+        try:
+            fn(val)
             return True
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
+        except psutil.AccessDenied as err:
+            print_info(colored(f"WARNING: {err}", PS_BAD_COLOR), True)
+            if not is_admin():
+                print_info(colored(f"Please try running as admin.", PS_BAD_COLOR), True)
         return False
 
 
