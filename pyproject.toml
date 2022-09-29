@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "autoprocprio"
+version = "6.0.0"
+description = "Automatically prioritize important apps' CPU priority and affinity"
+authors = ["Rain <Rainyan@users.noreply.github.com>"]
+license = "MIT License"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+colorama = "~0.4.4"
+psutil = "~5.8.0"
+termcolor = "~1.1.0"
+pywin32 = {version=">=303", markers="sys_platform=='win32'"}
+
+[tool.poetry.dev-dependencies]
+pycodestyle = "~2.9.1"
+
+[tool.poetry.scripts]
+autoprocprio = "autoprocprio:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

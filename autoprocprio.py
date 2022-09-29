@@ -371,14 +371,19 @@ def restore_original_ps_values():
                        "magenta"), True)
 
 
-while not EXITING:
-    print_info("Proc update...")
-    for p in PROCS:
-        p.update_procs()
-    print_info(colored("(Now active. To revert CPU priority changes, please "
-                       "close this window when you are done.)",
-                       "magenta"), True)
-    try:
-        time.sleep(POLL_DELAY_SECONDS)
-    except KeyboardInterrupt as e:
-        EXITING = True
+def main():
+    """Entry point."""
+    while not EXITING:
+        print_info("Proc update...")
+        for p in PROCS:
+            p.update_procs()
+        print_info(colored("(Now active. To revert CPU priority changes, please "
+                           "close this window when you are done.)",
+                           "magenta"), True)
+        try:
+            time.sleep(POLL_DELAY_SECONDS)
+        except KeyboardInterrupt as e:
+            EXITING = True
+
+if __name__ == "__main__":
+    main()

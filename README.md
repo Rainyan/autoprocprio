@@ -42,7 +42,9 @@ For Python module requirements, please see the [requirements](requirements.txt) 
   - Just run the app executable in the background
 ### Python script version:
   - Run the script: `python autoprocprio.py`
-  - Or from virtual env: `pipenv install && pipenv run python autoprocprio.py`
+  - Or from pipenv:
+    - Install: `pipenv --three && pipenv run pip install --upgrade -r requirements.txt`
+    - Run: `pipenv run python autoprocprio.py`
 
 ## Troubleshooting/questions/feature requests
 Feel free to [open a ticket](https://github.com/Rainyan/autoprocprio/issues)!
