@@ -99,6 +99,9 @@ POLL_DELAY_SECONDS = 60
 # Whether to print some debug information.
 VERBOSE = False
 
+# Flag for sleeping threads to detect when we are about to exit.
+EXITING = False
+
 # For Windows, this is the "low priority" option on taskmgr.
 BAD_NICENESS = psutil.IDLE_PRIORITY_CLASS if platform_is_windows() else 15
 # Force buggy procs on these core(s).
@@ -127,6 +130,8 @@ if platform_is_windows():
     def on_exit(signal_type):
         """Catch user exit signal, including user pressing the X icon.
         """
+        global EXITING
+        EXITING = True
         print(f"Caught signal: {signal_type}")
         restore_original_ps_values()
     win32api.SetConsoleCtrlHandler(on_exit, True)
@@ -358,23 +363,22 @@ def restore_original_ps_values():
     """
     for p in PROCS:
         p.restore_procs_properties()
-    # Giving it a good visual separation to make this final shutdown message
-    # appear friendlier, since we are potentially throwing some scary-looking
-    # interrupt exceptions which the user might interpret as an error state.
-    print_info(colored("\n\n\n\n\n"
+    print_info(colored("\n"
                        " = = = = = = = = = = = = = = = = = = = = = = = = =  ="
                        f"\n = The {SCRIPT_NAME} script is now exiting. Goodbye"
                        "! =\n = = = = = = = = = = = = = = = = = = = = = = = = "
-                       "=  =\n\n\n\n\n\n\n\n\n\n",
+                       "=  =\n",
                        "magenta"), True)
-    time.sleep(5)
 
 
-while True:
+while not EXITING:
     print_info("Proc update...")
     for p in PROCS:
         p.update_procs()
     print_info(colored("(Now active. To revert CPU priority changes, please "
                        "close this window when you are done.)",
                        "magenta"), True)
-    time.sleep(POLL_DELAY_SECONDS)
+    try:
+        time.sleep(POLL_DELAY_SECONDS)
+    except KeyboardInterrupt as e:
+        EXITING = True
