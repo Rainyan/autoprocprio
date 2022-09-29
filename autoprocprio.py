@@ -312,7 +312,8 @@ class TargetProcs():
         except psutil.AccessDenied as err:
             print_info(colored(f"WARNING: {err}", PS_BAD_COLOR), True)
             if not is_admin():
-                print_info(colored(f"Please try running as admin.", PS_BAD_COLOR), True)
+                print_info(colored(f"Please try running as admin.",
+                                   PS_BAD_COLOR), True)
         return False
 
 
