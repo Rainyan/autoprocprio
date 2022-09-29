@@ -61,7 +61,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "5.2.3"
+SCRIPT_VERSION = "5.2.4"
 
 # List of all the process names to prevent from using too much CPU time.
 # This sets low priority and isolates them to CPU core 0.
@@ -86,14 +86,14 @@ POLL_DELAY_SECONDS = 60
 VERBOSE = False
 
 # The "low priority" option on taskmgr.
-BAD_NICENESS = psutil.IDLE_PRIORITY_CLASS
+BAD_NICENESS = psutil.IDLE_PRIORITY_CLASS if platform_is_windows() else 15
 # Force buggy procs on these core(s).
 BAD_AFFINITY = [0, ]
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
 assert len(BAD_AFFINITY) > 0, "Need at least one CPU core"
 
 # The "high priority" option on taskmgr.
-GOOD_NICENESS = psutil.HIGH_PRIORITY_CLASS
+GOOD_NICENESS = psutil.HIGH_PRIORITY_CLASS if platform_is_windows() else -15
 # Use all cores except the one(s) reserved for "bad" procs.
 GOOD_AFFINITY = [a for a in list(range(cpu_count())) if a not in BAD_AFFINITY]
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
