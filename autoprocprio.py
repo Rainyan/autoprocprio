@@ -373,6 +373,7 @@ def restore_original_ps_values():
 
 def main():
     """Entry point."""
+    global EXITING
     while not EXITING:
         print_info("Proc update...")
         for p in PROCS:
