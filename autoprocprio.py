@@ -56,27 +56,41 @@ def platform_is_windows():
     return os.name == "nt"
 
 
+# pylint: disable=import-error
 if platform_is_windows():
     import colorama  # For command prompt colors to work properly
+    import ctypes    # For checking for admin privileges
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "5.2.3"
+SCRIPT_VERSION = "6.0.0"
+
+
+def add_app(executable_name):
+    """Returns executable name, suffixed with OS specific file extension.
+    """
+    has_windows_extension = executable_name.endswith(".exe")
+    if platform_is_windows():
+        if not has_windows_extension:
+            executable_name += ".exe"
+    else:
+        assert not has_windows_extension
+    return executable_name
+
 
 # List of all the process names to prevent from using too much CPU time.
 # This sets low priority and isolates them to CPU core 0.
 BAD_PROCNAMES = [
-    "steamwebhelper.exe",
-    "vrad.exe",
-    "vvis.exe",
-    "autoprocprio.exe",  # Self-limit since we aren't time sensitive.
+    add_app("autoprocprio"),  # Self-limit since we aren't time sensitive
+    add_app("steamwebhelper"),
 ]
+
 
 # List of all the process names where we really care about CPU performance.
 # This sets high priority and isolates them from the "BAD_PROCNAMES" CPU core.
 GOOD_PROCNAMES = [
-    "csgo.exe",
-    "hl2.exe",
+    add_app("csgo"),
+    add_app("hl2"),
 ]
 
 # How long to wait between proc CPU niceness/affinity updates, in seconds.
@@ -85,19 +99,29 @@ POLL_DELAY_SECONDS = 60
 # Whether to print some debug information.
 VERBOSE = False
 
-# The "low priority" option on taskmgr.
-BAD_NICENESS = psutil.IDLE_PRIORITY_CLASS
+# Flag for sleeping threads to detect when we are about to exit.
+EXITING = False
+
+# For Windows, this is the "low priority" option on taskmgr.
+BAD_NICENESS = psutil.IDLE_PRIORITY_CLASS if platform_is_windows() else 15
 # Force buggy procs on these core(s).
 BAD_AFFINITY = [0, ]
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
 assert len(BAD_AFFINITY) > 0, "Need at least one CPU core"
 
-# The "high priority" option on taskmgr.
-GOOD_NICENESS = psutil.HIGH_PRIORITY_CLASS
+# For Windows, this is the "high priority" option on taskmgr.
+GOOD_NICENESS = psutil.HIGH_PRIORITY_CLASS if platform_is_windows() else -15
 # Use all cores except the one(s) reserved for "bad" procs.
 GOOD_AFFINITY = [a for a in list(range(cpu_count())) if a not in BAD_AFFINITY]
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
 assert len(GOOD_AFFINITY) > 0, "Need at least one CPU core"
+
+
+def is_admin():
+    """Returns whether the user is running this script as admin/sudo."""
+    if platform_is_windows():
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    return "SUDO_UID" in os.environ
 
 
 if platform_is_windows():
@@ -106,6 +130,8 @@ if platform_is_windows():
     def on_exit(signal_type):
         """Catch user exit signal, including user pressing the X icon.
         """
+        global EXITING
+        EXITING = True
         print(f"Caught signal: {signal_type}")
         restore_original_ps_values()
     win32api.SetConsoleCtrlHandler(on_exit, True)
@@ -279,33 +305,33 @@ class TargetProcs():
                                print_restore_info, 2)
 
     def _get_nice(self, p):
-        try:
-            return p.nice()
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
-        return None
+        return self._try_psutil_get(p.nice)
 
     def _get_affinity(self, p):
-        try:
-            return p.cpu_affinity()
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
-        return None
+        return self._try_psutil_get(p.cpu_affinity)
 
     def _set_nice(self, p, nice):
-        try:
-            p.nice(nice)
-            return True
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
-        return False
+        return self._try_psutil_set(p.nice, nice)
 
     def _set_affinity(self, p, affinity):
+        return self._try_psutil_set(p.cpu_affinity, affinity)
+
+    def _try_psutil_get(self, fn):
         try:
-            p.cpu_affinity(affinity)
+            return fn()
+        except psutil.AccessDenied as err:
+            print_info(colored(f"WARNING: {err}", PS_BAD_COLOR), True)
+        return False
+
+    def _try_psutil_set(self, fn, val):
+        try:
+            fn(val)
             return True
-        except psutil.AccessDenied as e:
-            print_info(colored(f"WARNING: {e}", PS_BAD_COLOR), True)
+        except psutil.AccessDenied as err:
+            print_info(colored(f"WARNING: {err}", PS_BAD_COLOR), True)
+            if not is_admin():
+                print_info(colored("Please try running as admin.",
+                                   PS_BAD_COLOR), True)
         return False
 
 
@@ -337,23 +363,29 @@ def restore_original_ps_values():
     """
     for p in PROCS:
         p.restore_procs_properties()
-    # Giving it a good visual separation to make this final shutdown message
-    # appear friendlier, since we are potentially throwing some scary-looking
-    # interrupt exceptions which the user might interpret as an error state.
-    print_info(colored("\n\n\n\n\n"
+    print_info(colored("\n"
                        " = = = = = = = = = = = = = = = = = = = = = = = = =  ="
                        f"\n = The {SCRIPT_NAME} script is now exiting. Goodbye"
                        "! =\n = = = = = = = = = = = = = = = = = = = = = = = = "
-                       "=  =\n\n\n\n\n\n\n\n\n\n",
+                       "=  =\n",
                        "magenta"), True)
-    time.sleep(5)
 
 
-while True:
-    print_info("Proc update...")
-    for p in PROCS:
-        p.update_procs()
-    print_info(colored("(Now active. To revert CPU priority changes, please "
-                       "close this window when you are done.)",
-                       "magenta"), True)
-    time.sleep(POLL_DELAY_SECONDS)
+def main():
+    """Entry point."""
+    global EXITING
+    while not EXITING:
+        print_info("Proc update...")
+        for p in PROCS:
+            p.update_procs()
+        print_info(colored("(Now active. To revert CPU priority changes, "
+                           "please close this window when you are done.)",
+                           "magenta"), True)
+        try:
+            time.sleep(POLL_DELAY_SECONDS)
+        except KeyboardInterrupt as e:
+            EXITING = True
+
+
+if __name__ == "__main__":
+    main()
