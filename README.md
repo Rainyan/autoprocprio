@@ -43,7 +43,11 @@ For Python module requirements, please see the [requirements](requirements.txt) 
 ### Python script version:
   - Run the script: `python autoprocprio.py`
   - Or from pipx:
-    - Install: `pip install --upgrade pipx && pipx install git+https://github.com/Rainyan/autoprocprio.git`
+    - Install:
+        ```sh
+        pip install --upgrade pipx
+        pipx install git+https://github.com/Rainyan/autoprocprio.git
+        ```
     - Run: `autoprocprio`
   - Or from pipenv:
     - Install: `pipenv --three && pipenv run pip install --upgrade -r requirements.txt`
