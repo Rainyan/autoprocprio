@@ -52,7 +52,7 @@ For Python module requirements, please see the [requirements](requirements.txt) 
   - Or from pipenv:
     - Install: `pipenv --three && pipenv run pip install --upgrade -r requirements.txt`
     - Run: `pipenv run python autoprocprio.py`
-    - Or run as sudo (required on Linuxes where increasing niceness is a privileged action):
+    - Or run as sudo (required on Linuxes where increasing [nice priority](https://man7.org/linux/man-pages/man2/nice.2.html) is a privileged action):
         ```bash
         pipenv shell && sudo $(which python) autoprocprio.py
         ```
