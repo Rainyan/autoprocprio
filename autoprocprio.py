@@ -42,6 +42,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import argparse
 import atexit
 import datetime
 import time
@@ -63,7 +64,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "6.0.0"
+SCRIPT_VERSION = "6.1.0"
 
 
 def add_app(executable_name):
@@ -335,13 +336,7 @@ class TargetProcs():
         return False
 
 
-print(f"\n\t== {SCRIPT_NAME} version {SCRIPT_VERSION} ==\n")
-
 PROCS = []
-for procname in BAD_PROCNAMES:
-    PROCS.append(TargetProcs(procname, BAD_NICENESS, BAD_AFFINITY, VERBOSE))
-for procname in GOOD_PROCNAMES:
-    PROCS.append(TargetProcs(procname, GOOD_NICENESS, GOOD_AFFINITY, VERBOSE))
 
 
 def conditional(decorator, condition):
@@ -372,7 +367,76 @@ def restore_original_ps_values():
 
 
 def main():
-    """Entry point."""
+    parser = argparse.ArgumentParser(
+        prog=SCRIPT_NAME,
+        description="Automatically set processes' CPU priority and affinity "
+                    "by process name",
+        epilog=f"Version {SCRIPT_VERSION}",
+    )
+    parser.add_argument(
+        "-g",
+        "--good",
+        help="comma-delimited list of app(s) to prioritize (optional)",
+    )
+    parser.add_argument(
+        "-b",
+        "--bad",
+        help="comma-delimited list of app(s) to deprioritize (optional)",
+    )
+    parser.add_argument(
+        "-G",
+        "--appendgood",
+        action="store_true",
+        help="if set, will append the good apps list instead of overwriting",
+    )
+    parser.add_argument(
+        "-B",
+        "--appendbad",
+        action="store_true",
+        help="if set, will append the bad apps list instead of overwriting",
+    )
+    args = parser.parse_args()
+
+    print(f"\n\t== {SCRIPT_NAME} version {SCRIPT_VERSION} ==\n")
+
+    global PROCS
+    if args.good is None or args.appendgood:
+        for procname in GOOD_PROCNAMES:
+            PROCS.append(
+                TargetProcs(procname, GOOD_NICENESS, GOOD_AFFINITY, VERBOSE)
+            )
+    try:
+        for procname in [
+            x
+            for x in list(set(args.good.split(",")))
+            if add_app(x) not in GOOD_PROCNAMES
+        ]:
+            PROCS.append(
+                TargetProcs(
+                    add_app(procname), GOOD_NICENESS, GOOD_AFFINITY, VERBOSE
+                )
+            )
+    except AttributeError:
+        pass
+
+    if args.bad is None or args.appendbad:
+        for procname in BAD_PROCNAMES:
+            PROCS.append(
+                TargetProcs(procname, BAD_NICENESS, BAD_AFFINITY, VERBOSE)
+            )
+    try:
+        for procname in [
+            x
+            for x in list(set(args.bad.split(",")))
+            if add_app(x) not in BAD_PROCNAMES
+        ]:
+            PROCS.append(
+                TargetProcs(add_app(procname), BAD_NICENESS, BAD_AFFINITY,
+                            VERBOSE)
+            )
+    except AttributeError:
+        pass
+
     global EXITING
     while not EXITING:
         print_info("Proc update...")
