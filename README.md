@@ -39,8 +39,21 @@ For Python module requirements, please see the [requirements](requirements.txt) 
 
 ## Usage:
 ### Windows app version:
+#### Basic use:
   - Just run the app executable in the background
+#### Custom app rules:
+  - Create a shortcut to the executable.
+  - Add the argparse options after the shortcut's Target path. Supported argparse options:
+  ```
+  -g GOOD, --good GOOD  comma-delimited list of app(s) to prioritize (optional)
+  -b BAD, --bad BAD     comma-delimited list of app(s) to deprioritize (optional)
+  -G, --appendgood      if set, will append the good apps list instead of overwriting
+  -B, --appendbad       if set, will append the bad apps list instead of overwriting
+  ```
+  ![autoproc_shortcut_example](https://user-images.githubusercontent.com/6595066/199002550-e61a06c0-8fef-40fe-a6ca-da51af1db5fd.png)
+
 ### Python script version:
+#### Basic use:
   - Run the script: `python autoprocprio.py`
   - Or from pipx:
     - Install:
@@ -56,6 +69,8 @@ For Python module requirements, please see the [requirements](requirements.txt) 
         ```bash
         pipenv shell && sudo $(which python) autoprocprio.py
         ```
+ #### Custom app rules:
+  - Launch the script with `--help` to see the supported argument inputs description.
 
 ## Troubleshooting/questions/feature requests
 Feel free to [open a ticket](https://github.com/Rainyan/autoprocprio/issues)!
