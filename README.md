@@ -50,7 +50,7 @@ For Python module requirements, please see the [requirements](requirements.txt) 
   -G, --appendgood      if set, will append the good apps list instead of overwriting
   -B, --appendbad       if set, will append the bad apps list instead of overwriting
   ```
-  ![autoproc_shortcut_example](https://user-images.githubusercontent.com/6595066/199002550-e61a06c0-8fef-40fe-a6ca-da51af1db5fd.png)
+  ![Example of setting the arguments via Windows shortcut GUI](https://user-images.githubusercontent.com/6595066/199002550-e61a06c0-8fef-40fe-a6ca-da51af1db5fd.png)
 
 ### Python script version:
 #### Basic use:
