@@ -64,7 +64,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "6.1.0"
+SCRIPT_VERSION = "6.1.1"
 
 
 def add_app(executable_name):
@@ -409,7 +409,7 @@ def main():
         for procname in [
             x
             for x in list(set(args.good.split(",")))
-            if add_app(x) not in GOOD_PROCNAMES
+            if add_app(x) not in [y.procname for y in PROCS]
         ]:
             PROCS.append(
                 TargetProcs(
@@ -428,7 +428,7 @@ def main():
         for procname in [
             x
             for x in list(set(args.bad.split(",")))
-            if add_app(x) not in BAD_PROCNAMES
+            if add_app(x) not in [y.procname for y in PROCS]
         ]:
             PROCS.append(
                 TargetProcs(add_app(procname), BAD_NICENESS, BAD_AFFINITY,
