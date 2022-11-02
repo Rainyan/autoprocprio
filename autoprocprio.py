@@ -376,29 +376,37 @@ def main():
     parser.add_argument(
         "-g",
         "--good",
-        help="comma-delimited list of app(s) to prioritize (optional); will overwrite defaults",
+        help="comma-delimited list of app(s) to prioritize (optional); "
+             "will overwrite defaults",
     )
     parser.add_argument(
         "-b",
         "--bad",
-        help="comma-delimited list of app(s) to deprioritize (optional); will overwrite defaults",
+        help="comma-delimited list of app(s) to deprioritize (optional); "
+             "will overwrite defaults",
     )
     parser.add_argument(
         "-G",
         "--appendgood",
-        help="comma-delimited list of app(s) to prioritize (optional); will append to defaults",
+        help="comma-delimited list of app(s) to prioritize (optional); "
+             "will append to defaults",
     )
     parser.add_argument(
         "-B",
         "--appendbad",
-        help="comma-delimited list of app(s) to deprioritize (optional); will append to defaults",
+        help="comma-delimited list of app(s) to deprioritize (optional); "
+             "will append to defaults",
     )
     args = parser.parse_args()
 
     if any((args.good, args.appendgood)):
-        assert not all((args.good, args.appendgood)), "Can't use --good and --appendgood at the same time."
+        assert not all(
+            (args.good, args.appendgood)
+        ), "Can't use --good and --appendgood at the same time."
     if any((args.bad, args.appendbad)):
-        assert not all((args.bad, args.appendbad)), "Can't use --bad and --appendbad at the same time."
+        assert not all(
+            (args.bad, args.appendbad)
+        ), "Can't use --bad and --appendbad at the same time."
 
     print(f"\n\t== {SCRIPT_NAME} version {SCRIPT_VERSION} ==\n")
 
@@ -414,7 +422,8 @@ def main():
             ]:
                 PROCS.append(
                     TargetProcs(
-                        add_app(procname), GOOD_NICENESS, GOOD_AFFINITY, VERBOSE
+                        add_app(procname), GOOD_NICENESS, GOOD_AFFINITY,
+                        VERBOSE
                     )
                 )
         except AttributeError:
