@@ -45,12 +45,17 @@ For Python module requirements, please see the [requirements](requirements.txt) 
   - Create a shortcut to the executable.
   - Add the argparse options after the shortcut's Target path. Supported argparse options:
   ```
-  -g GOOD, --good GOOD  comma-delimited list of app(s) to prioritize (optional)
-  -b BAD, --bad BAD     comma-delimited list of app(s) to deprioritize (optional)
-  -G, --appendgood      if set, will append the good apps list instead of overwriting
-  -B, --appendbad       if set, will append the bad apps list instead of overwriting
+  -g GOOD, --good GOOD  comma-delimited list of app(s) to prioritize (optional); will overwrite defaults
+  -b BAD, --bad BAD     comma-delimited list of app(s) to deprioritize (optional); will overwrite defaults
+  -G, --appendgood      comma-delimited list of app(s) to prioritize (optional); will append to defaults
+  -B, --appendbad       comma-delimited list of app(s) to deprioritize (optional); will append to defaults
   ```
-  ![Example of setting the arguments via Windows shortcut GUI](https://user-images.githubusercontent.com/6595066/199018871-7e755ec7-aa72-4763-8673-458813a22601.png)
+
+For example:
+
+![Example of setting the arguments via Windows shortcut GUI](https://user-images.githubusercontent.com/6595066/199398710-c4fd829b-11f4-43e6-aadc-a80244620f76.png)
+
+This would append hammer.exe to the list of prioritized apps, and vrad.exe, vvis.exe, and vbsp.exe to the list of deprioritized apps.
 
 ### Python script version:
 #### Basic use:
