@@ -34,9 +34,6 @@ CPU affinity levels, much like one could manually do using a task manager — bu
 
 For Python module requirements, please see the [requirements](requirements.txt) file.
 
-## Config:
-  - Assign the `BAD_PROCNAMES` and `GOOD_PROCNAMES` globals as required.
-
 ## Usage:
 ### Windows app version:
 #### Basic use:
