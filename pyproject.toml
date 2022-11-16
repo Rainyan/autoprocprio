@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "autoprocprio"
-version = "6.2.0"
+version = "7.0.0"
 description = "Automatically prioritize important apps' CPU priority and affinity"
 authors = ["Rain <Rainyan@users.noreply.github.com>"]
 license = "MIT License"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 colorama = "~0.4.4"
 psutil = "~5.8.0"
 termcolor = "~1.1.0"
