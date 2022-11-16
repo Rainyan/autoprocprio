@@ -15,7 +15,9 @@
    URL to the latest version of this script:
        https://github.com/Rainyan/autoprocprio
 
-   Config:
+   Config (recommended way):
+     - Please see the readme for details on application args.
+   Config (hardcoded defaults):
      - Assign the BAD_PROCNAMES and GOOD_PROCNAMES globals as required.
 
    Usage:
@@ -64,7 +66,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "7.0.0"
+SCRIPT_VERSION = "7.0.1"
 
 
 def add_app(executable_name):
@@ -82,7 +84,7 @@ def add_app(executable_name):
 # List of all the process names to prevent from using too much CPU time.
 # This sets low priority and isolates them to CPU core 0.
 BAD_PROCNAMES = [
-    add_app("autoprocprio"),  # Self-limit since we aren't time sensitive
+    add_app(SCRIPT_NAME.lower()),  # Self-limit since we aren't time sensitive
     add_app("steamwebhelper"),
 ]
 
@@ -455,6 +457,25 @@ def main():
             PROCS.append(
                 TargetProcs(procname, BAD_NICENESS, BAD_AFFINITY, VERBOSE)
             )
+
+    # If we're setting ourselves with low priority, make sure that item is
+    # the last in the list, so that we're guaranteed to have sufficient
+    # niceness to get all the way through self-initialization before it
+    # takes effect.
+    try:
+        PROCS.append(
+            PROCS.pop(
+                PROCS.index(
+                    [
+                        x
+                        for x in PROCS
+                        if x.procname == add_app(SCRIPT_NAME.lower())
+                    ][0]
+                )
+            )
+        )
+    except (ValueError, IndexError):
+        pass
 
     global EXITING
     while not EXITING:
