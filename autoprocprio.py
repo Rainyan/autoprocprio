@@ -1,48 +1,27 @@
 #!/usr/bin/env python3
 
-"""This script is a kludge meant for continuously setting "BAD_PROCNAMES" to
-   the lowest CPU priority, and isolating their threads affinity to CPU core(s)
-   separate from the list of processes defined in "GOOD_PROCNAMES".
+"""Python 3 script for automatically setting (primarily Windows) processes'
+   CPU priority and affinity by process name.
+
+   This script is a kludge meant for continuously setting BAD_PROCNAMES to
+   the lowest CPU priority, and isolating their threads affinity to CPU
+   core(s) separate from the list of processes defined in GOOD_PROCNAMES.
 
    "Inspired" by repeated bad experiences with steamwebhelper.exe losing me
-   CS:GO rounds by using over 30 percent of CPU time when I really wanted to be
-   drawing video game frames with those cycles instead.
+   CS:GO rounds by using over 30 percent of CPU time when I really wanted to
+   be drawing video game frames with those cycles instead.
 
-   This script *should* be video game anti-cheat safe — all it does is iterate
-   running processes, and selectively read & reassign said process priority and
-   CPU affinity levels — but use at your own risk.
+   This script should be video game anti-cheat safe — all it does is iterate
+   running processes, and selectively read & reassign said process priority
+   and CPU affinity levels, much like one could manually do using a task
+   manager — but use at your own risk.
 
-   URL to the latest version of this script:
-       https://github.com/Rainyan/autoprocprio
+   For Python module requirements, please see the requirements.txt file.
 
-   Config (recommended way):
-     - Please see the readme for details on application args.
-   Config (hardcoded defaults):
-     - Assign the BAD_PROCNAMES and GOOD_PROCNAMES globals as required.
+   For more detailed usage help, please see the README.md file.
 
-   Usage:
-     - Just run the script ("python autoprocprio.py").
+   For license info, please see the LICENSE file.
 """
-
-# Copyright 2021 https://github.com/Rainyan
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 
 import argparse
 import atexit
