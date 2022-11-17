@@ -379,7 +379,16 @@ def main():
         help="comma-delimited list of app(s) to deprioritize (optional); "
              "will append to defaults",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="whether to print additional debug information",
+    )
     args = parser.parse_args()
+
+    global VERBOSE
+    VERBOSE = args.verbose
 
     if any((args.good, args.appendgood)):
         assert not all(
