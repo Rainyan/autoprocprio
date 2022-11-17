@@ -385,6 +385,12 @@ def main():
         action="store_true",
         help="whether to print additional debug information",
     )
+    parser.add_argument(
+        "-n",
+        "--no_self_idle",
+        action="store_true",
+        help="if set, will not lower this script's own priority",
+    )
     args = parser.parse_args()
 
     global VERBOSE
@@ -447,22 +453,29 @@ def main():
                 TargetProcs(procname, BAD_NICENESS, BAD_AFFINITY, VERBOSE)
             )
 
-    # If we're setting ourselves with low priority, make sure that item is
-    # the last in the list, so that we're guaranteed to have sufficient
-    # niceness to get all the way through self-initialization before it
-    # takes effect.
     try:
-        PROCS.append(
-            PROCS.pop(
-                PROCS.index(
-                    [
-                        x
-                        for x in PROCS
-                        if x.procname == add_app(SCRIPT_NAME.lower())
-                    ][0]
+        # If we're setting ourselves with low priority, make sure that item is
+        # the last in the list, so that we're guaranteed to have sufficient
+        # niceness to get all the way through self-initialization before it
+        # takes effect.
+        if not args.no_self_idle:
+            PROCS.append(
+                PROCS.pop(
+                    PROCS.index(
+                        [
+                            x
+                            for x in PROCS
+                            if x.procname == add_app(SCRIPT_NAME.lower())
+                        ][0]
+                    )
                 )
             )
-        )
+        # If we're not lowering the script's own priority,
+        # filter any such entry from the final result.
+        else:
+            PROCS = [
+                x for x in PROCS if x.procname != add_app(SCRIPT_NAME.lower())
+            ]
     except (ValueError, IndexError):
         pass
 
