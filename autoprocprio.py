@@ -45,7 +45,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "7.0.3"
+SCRIPT_VERSION = "8.0.0"
 
 
 def add_app(executable_name):
@@ -380,7 +380,7 @@ def main():
              "will append to defaults",
     )
     parser.add_argument(
-        "-v",
+        "-V",
         "--verbose",
         action="store_true",
         help="whether to print additional debug information",
