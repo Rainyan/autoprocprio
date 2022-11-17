@@ -66,7 +66,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "7.0.2"
+SCRIPT_VERSION = "7.0.3"
 
 
 def add_app(executable_name):
@@ -257,8 +257,9 @@ class TargetProcs():
                 self.cachedprocs.append(p)
                 self.og_ps_vals[p] = (self._get_nice(p), self._get_affinity(p))
         # Always showing this, because it's probably useful info to user
-        print_info(f'{colored(self.procname, PROC_COLOR)} currently caching '
-                   f'{len(self.cachedprocs)} proc(s).', True, 2)
+        print_info(f"{colored(self.procname, PROC_COLOR)} "
+                   f"(priority: {get_nice_name(self.nice)}) currently caching "
+                   f"{len(self.cachedprocs)} proc(s).", True, 2)
 
         self.set_procs_properties()
 
