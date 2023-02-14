@@ -71,6 +71,7 @@ This would append hammer.exe to the list of prioritized apps, and vrad.exe, vvis
         ```bash
         pipenv shell && sudo $(which python) autoprocprio.py
         ```
+      - Alternatively, instead of running as superuser, set the appropriate "nice" resource limit for the unprivileged user.
  #### Custom app rules:
   - Launch the script with `--help` to see the supported argument inputs description.
 
