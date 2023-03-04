@@ -65,7 +65,7 @@ This would append hammer.exe to the list of prioritized apps, and vrad.exe, vvis
         ```
     - Run: `autoprocprio`
   - Or from pipenv:
-    - Install: `pipenv --three && pipenv run pip install --upgrade -r requirements.txt`
+    - Install: `pipenv --install && pipenv run pip install --upgrade -r requirements.txt`
     - Run: `pipenv run python autoprocprio.py`
     - Or run as sudo (required on Linuxes where lowering [niceness](https://man7.org/linux/man-pages/man2/nice.2.html) is typically a privileged action):
         ```bash
