@@ -14,6 +14,8 @@ Ad-hoc tool for making csgo not lag as much.
 
 Windows app available; see the [Releases page](https://github.com/Rainyan/autoprocprio/releases) to download.
 
+This was built for Windows, but Linux is also supported; see the Python script version.
+
 <hr>
 
 ### Longer version:
