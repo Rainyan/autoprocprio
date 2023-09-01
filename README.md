@@ -10,7 +10,7 @@
 
 ### TL;DR:
 
-Ad-hoc tool for making csgo not lag as much.
+Ad-hoc tool for making Counter-Strike not lag as much.
 
 Windows app available; see the [Releases page](https://github.com/Rainyan/autoprocprio/releases) to download.
 
