@@ -45,7 +45,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "8.0.0"
+SCRIPT_VERSION = "8.1.0"
 
 
 def add_app(executable_name):
@@ -71,6 +71,7 @@ BAD_PROCNAMES = [
 # List of all the process names where we really care about CPU performance.
 # This sets high priority and isolates them from the "BAD_PROCNAMES" CPU core.
 GOOD_PROCNAMES = [
+    add_app("c2"),
     add_app("csgo"),
     add_app("hl2"),
 ]
