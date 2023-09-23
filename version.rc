@@ -15,7 +15,7 @@ VSVersionInfo(
       StringTable(
         u'040904B0',
         [StringStruct(u'FileDescription', u'Automatically prioritize important apps\x27 CPU priority and affinity'),
-        StringStruct(u'FileVersion', u'8.1.0'),
+        StringStruct(u'FileVersion', u'8.1.1'),
         StringStruct(u'InternalName', u'autoprocprio'),
         StringStruct(u'LegalCopyright', u'\xa9 github.com/Rainyan. MIT licensed.'),
         StringStruct(u'OriginalFilename', u'autoprocprio.exe'),
