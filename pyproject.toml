@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autoprocprio"
-version = "8.1.1"
+version = "9.0.0"
 description = "Automatically prioritize important apps' CPU priority and affinity"
 authors = ["Rain <Rainyan@users.noreply.github.com>"]
 license = "MIT License"
