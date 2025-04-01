@@ -98,9 +98,11 @@ GOOD_AFFINITY = [a for a in list(range(cpu_count()))]
 # We are reserving cores starting from the end, because for modern CPUs with
 # performance/economy cores (Intel) or 3D V-Cache (AMD), the cores with worse
 # performance in games tend to be allocated to the latter half.
-# We should ideally enumerate and identify the cores properly for both Windows & Linux,
-# but this should be good enough for the current CPU gens out there, as of April 2025.
-# See associated bug for more context: https://github.com/Rainyan/autoprocprio/issues/27
+# We should ideally enumerate and identify the cores properly for both
+# Windows & Linux, but this should be good enough for the current CPU gens
+# out there, as of April 2025.
+# See associated bug for more context:
+# https://github.com/Rainyan/autoprocprio/issues/27
 BAD_AFFINITY = GOOD_AFFINITY[-NUM_BAD_AFFINITY_CORES:]
 # Exclude the "bad cores" from the good ones.
 GOOD_AFFINITY = GOOD_AFFINITY[:-NUM_BAD_AFFINITY_CORES]
