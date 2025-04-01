@@ -45,7 +45,7 @@ if platform_is_windows():
     import win32api  # For catching user closing the app window via the X icon
 
 SCRIPT_NAME = "AutoProcPrio"
-SCRIPT_VERSION = "9.0.2"
+SCRIPT_VERSION = "10.0.0"
 
 
 def add_app(executable_name):
@@ -86,17 +86,29 @@ EXITING = False
 
 # For Windows, this is the "low priority" option on taskmgr.
 BAD_NICENESS = psutil.IDLE_PRIORITY_CLASS if platform_is_windows() else 15
-# Force buggy procs on these core(s).
-BAD_AFFINITY = [0, ]
+# How many cores to dedicate for buggy/badly behaving apps.
+NUM_BAD_AFFINITY_CORES = 1
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
-assert len(BAD_AFFINITY) > 0, "Need at least one CPU core"
+assert NUM_BAD_AFFINITY_CORES > 0, "Need at least one CPU core"
 
 # For Windows, this is the "high priority" option on taskmgr.
 GOOD_NICENESS = psutil.HIGH_PRIORITY_CLASS if platform_is_windows() else -15
-# Use all cores except the one(s) reserved for "bad" procs.
-GOOD_AFFINITY = [a for a in list(range(cpu_count())) if a not in BAD_AFFINITY]
+
+GOOD_AFFINITY = [a for a in list(range(cpu_count()))]
+# We are reserving cores starting from the end, because for modern CPUs with
+# performance/economy cores (Intel) or 3D V-Cache (AMD), the cores with worse
+# performance in games tend to be allocated to the latter half.
+# We should ideally enumerate and identify the cores properly for both
+# Windows & Linux, but this should be good enough for the current CPU gens
+# out there, as of April 2025.
+# See associated bug for more context:
+# https://github.com/Rainyan/autoprocprio/issues/27
+BAD_AFFINITY = GOOD_AFFINITY[-NUM_BAD_AFFINITY_CORES:]
+# Exclude the "bad cores" from the good ones.
+GOOD_AFFINITY = GOOD_AFFINITY[:-NUM_BAD_AFFINITY_CORES]
 # If you don't want to set this, pass None to the TargetProcs ctor arg.
 assert len(GOOD_AFFINITY) > 0, "Need at least one CPU core"
+assert len(BAD_AFFINITY) > 0, "Need at least one CPU core"
 
 
 def is_admin():
